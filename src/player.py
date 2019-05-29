@@ -11,5 +11,4 @@ class Player:
     def __str__(self):
         return str(self.__dict__)
 
-print(Player("julian", "someroom", "money"))
-
+# print(Player("julian", "someroom", "money"))
