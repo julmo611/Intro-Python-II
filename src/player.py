@@ -3,12 +3,7 @@
 
 
 class Player:
-    def __init__(self, name, room, item):
-        self.name = name
-        self.room = room
-        self.item = item
-
-    def __str__(self):
-        return str(self.__dict__)
-
-# print(Player("julian", "someroom", "money"))
+    def __init__(self, player_name, room_description, player_weapon=[]):
+        self.player_name = player_name
+        self.room_description = room_description
+        self.player_weapon = player_weapon

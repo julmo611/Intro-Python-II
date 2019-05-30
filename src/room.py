@@ -3,13 +3,10 @@
 
 
 class Room:
-    def __init__(self, room_name, room_description, room_item):
+    def __init__(self, room_name, description, n_to=None, s_to=None, e_to=None, w_to=None, items=None):
         self.room_name = room_name
-        self.room_description = room_description
-        self.room_item = room_item
-
-    def __str__(self):
-        return str(self.__dict__)
-
-
-# print(Room("dimond", "small room", "Magic"))
+        self.description = description
+        self.n_to = n_to
+        self.s_to = s_to
+        self.e_to = e_to
+        self.w_to = w_to

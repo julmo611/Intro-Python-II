@@ -1,4 +1,10 @@
 from room import Room
+from player import Player
+
+import sys
+
+# print(sys.version)
+
 
 # Declare all the rooms
 
@@ -25,19 +31,23 @@ earlier adventurers. The only exit is to the south."""),
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
-room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
-room['foyer'].e_to = room['narrow']
-room['overlook'].s_to = room['foyer']
-room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
+room['foyer'].s_to = room['outside']
+room['overlook'].s_to = room['foyer']
+room['foyer'].e_to = room['narrow']
 room['treasure'].s_to = room['narrow']
+room['narrow'].w_to = room['foyer']
 
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+
+
+player = Player(input("Enter your name: "),
+                room["outside"], input("What's your weapon: "))
 
 # Write a loop that:
 #
@@ -49,3 +59,41 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+def walking_player(direction):
+    error = "\nThere is no room here, please try again\n"
+    if direction == 'n':
+        if player.room_description.n_to is not None:
+            player.room_description = player.room_description.n_to
+        else:
+            print(error)
+    elif direction == 's':
+        if player.room_description.s_to is not None:
+            player.room_description = player.room_description.s_to
+        else:
+            print(error)
+    elif direction == 'e':
+        if player.room_description.e_to is not None:
+            player.room_description = player.room_description.e_to
+        else:
+            print(error)
+    elif direction == 'w':
+        if player.room_description.w_to is not None:
+            player.room_description = player.room_description.w_to
+        else:
+            print(error)
+
+
+while True:
+    print(
+        f"I'm here: {player.room_description.room_name}\nDescription: {player.room_description.description} \n")
+    print(
+        f"My warrior's name: {player.player_name}\n My Weapon: {player.player_weapon}")
+    walk = input(
+        "Walk to North(n), South(s), East(e), or West(w)\nQuit Game(q): ")
+    walking_player(walk)
+    if walk == 'q':
+        break
+    else:
+        print("This room does not exist. Please try again.")
