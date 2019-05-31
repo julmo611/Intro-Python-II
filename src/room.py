@@ -10,3 +10,7 @@ class Room:
         self.s_to = s_to
         self.e_to = e_to
         self.w_to = w_to
+        self.items = items
+
+    def __repr__(self):
+        return str(f'{self.name}')

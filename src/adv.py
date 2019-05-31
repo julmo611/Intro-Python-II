@@ -1,7 +1,7 @@
+import sys
 from room import Room
 from player import Player
-
-import sys
+from item import Item
 
 # print(sys.version)
 
@@ -28,6 +28,15 @@ earlier adventurers. The only exit is to the south."""),
 }
 
 
+item = {
+    "Dragon Armour":   Item("Dragon Armour", "What did you have to go and do that for? Here, take this Dragon Potion and leave me alone!"),
+    "Magic sword":    Item("Magic sword", "Take this, the Magic Sword. Twice the size and twice as powerful as all your other close range weapons."),
+    "Chicken Drumstick":  Item("Chicken Drumstick", "Here you are Sir Knight, a wart covered and cabbage smelling old crone I may be but I always keep my promises: I grant you my reward!	"),
+    "Hammer":   Item("Hammer", "It'll smash anything and it won't fall apart like a club"),
+    "Flaming Longbow":  Item("Flaming Longbow", "more powerful than a crossbow, the option of flaming arrows, it is truly the weapon of noblemen."),
+}
+
+
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
@@ -39,6 +48,15 @@ room['foyer'].e_to = room['narrow']
 room['treasure'].s_to = room['narrow']
 room['narrow'].w_to = room['foyer']
 
+
+# Link rooms with items
+
+room['outside'].items = item["Dragon Armour"]
+room['foyer'].items = item["Magic sword"]
+room['overlook'].items = item["Chicken Drumstick"]
+room['narrow'].items = item["Hammer"]
+room['treasure'].items = item["Flaming Longbow"]
+
 #
 # Main
 #
@@ -46,8 +64,7 @@ room['narrow'].w_to = room['foyer']
 # Make a new player object that is currently in the 'outside' room.
 
 
-player = Player(input("Enter your name: "),
-                room["outside"], input("What's your weapon: "))
+player = Player(input("Enter your name: "), room["outside"])
 
 # Write a loop that:
 #
@@ -62,38 +79,56 @@ player = Player(input("Enter your name: "),
 
 
 def walking_player(direction):
-    error = "\nThere is no room here, please try again\n"
+    error = "\n-----There is no room here, please try again------\n"
+    tagain = "\n Can you read the description please? \n"
     if direction == 'n':
         if player.room_description.n_to is not None:
             player.room_description = player.room_description.n_to
         else:
-            print(error)
+            print(tagain)
+
     elif direction == 's':
         if player.room_description.s_to is not None:
             player.room_description = player.room_description.s_to
         else:
-            print(error)
+            print(tagain)
+
     elif direction == 'e':
         if player.room_description.e_to is not None:
             player.room_description = player.room_description.e_to
         else:
-            print(error)
+            print(tagain)
+
     elif direction == 'w':
         if player.room_description.w_to is not None:
             player.room_description = player.room_description.w_to
         else:
-            print(error)
+            print(tagain)
+    elif direction == 'p':
+        if Player.get_item:
+            player.get_item(item)
+            print(f"This is your new inventory: {player.item}")
+    elif direction == 'd':
+        if Player.drop_item:
+            player.drop_item(item)
+            print(player.item)
+    elif direction == 'in':
+        if Player.get_item:
+            print(
+                f"====================================\nYour inventory:\n{player.item}\n======================================")
+        else:
+            print("You don't have any item")
+    else:
+        print(error)
 
 
 while True:
+    print(f"My warrior's name: {player.player_name}")
     print(
         f"I'm here: {player.room_description.room_name}\nDescription: {player.room_description.description} \n")
-    print(
-        f"My warrior's name: {player.player_name}\n My Weapon: {player.player_weapon}")
     walk = input(
-        "Walk to North(n), South(s), East(e), or West(w)\nQuit Game(q): ")
+        "Walk to North(n), South(s), East(e), or West(w)\n Drop item(d), Pickup item(p), See inventory(in),\nQuit Game(q): \nNext move -> ")
     walking_player(walk)
     if walk == 'q':
+        print("Game Over")
         break
-    else:
-        print("This room does not exist. Please try again.")

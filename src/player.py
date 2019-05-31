@@ -3,7 +3,16 @@
 
 
 class Player:
-    def __init__(self, player_name, room_description, player_weapon=[]):
+    def __init__(self, player_name, room_description, item=[]):
         self.player_name = player_name
         self.room_description = room_description
-        self.player_weapon = player_weapon
+        self.item = item
+
+    def __repr__(self):
+        return str(f'{self.player_name} {self.room_description} {self.item}')
+
+    def get_item(self, item):
+        self.item.append(self.room_description.items)
+
+    def drop_item(self, item):
+        self.item.remove(self.room_description.items)
